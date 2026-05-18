@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { hashEmail } from "@/lib/crypto";
 import { createSession, COOKIE_NAME } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const { email, name, sector } = await req.json();

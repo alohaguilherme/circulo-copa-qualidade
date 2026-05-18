@@ -1,12 +1,20 @@
 import { createClient } from "@libsql/client";
 
-const globalForDb = global as unknown as { dbClient: ReturnType<typeof createClient> };
+type DbClient = ReturnType<typeof createClient>;
+const globalForDb = global as unknown as { dbClient: DbClient };
 
-export const db =
-  globalForDb.dbClient ??
-  createClient({
+function getDb(): DbClient {
+  if (globalForDb.dbClient) return globalForDb.dbClient;
+  const client = createClient({
     url: process.env.TURSO_DATABASE_URL!,
     authToken: process.env.TURSO_AUTH_TOKEN,
   });
+  if (process.env.NODE_ENV !== "production") globalForDb.dbClient = client;
+  return client;
+}
 
-if (process.env.NODE_ENV !== "production") globalForDb.dbClient = db;
+export const db = new Proxy({} as DbClient, {
+  get(_, prop) {
+    return (getDb() as unknown as Record<string, unknown>)[prop as string];
+  },
+});

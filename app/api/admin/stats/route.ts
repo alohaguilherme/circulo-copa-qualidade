@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const isAdmin = await getAdminSession();
   if (!isAdmin) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
