@@ -1,0 +1,24 @@
+{
+  "name": "Copa da Qualidade Assistencial",
+  "short_name": "Copa Qualidade",
+  "description": "Álbum de figurinhas do Hospital do Círculo",
+  "start_url": "/album",
+  "display": "standalone",
+  "background_color": "#14532d",
+  "theme_color": "#16a34a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
