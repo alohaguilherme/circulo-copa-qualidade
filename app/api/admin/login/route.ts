@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { compare } from "bcryptjs";
 import { createAdminSession, ADMIN_COOKIE_NAME } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -6,7 +7,8 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const { password } = await req.json();
 
-  if (password !== process.env.ADMIN_PASSWORD) {
+  const hash = process.env.ADMIN_PASSWORD_HASH;
+  if (!hash || !(await compare(password, hash))) {
     return NextResponse.json({ error: "Senha incorreta" }, { status: 401 });
   }
 
