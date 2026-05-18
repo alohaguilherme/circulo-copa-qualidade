@@ -7,7 +7,8 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const { password } = await req.json();
 
-  const hash = process.env.ADMIN_PASSWORD_HASH;
+  const encoded = process.env.ADMIN_PASSWORD_HASH;
+  const hash = encoded ? Buffer.from(encoded, "base64").toString() : null;
   if (!hash || !(await compare(password, hash))) {
     return NextResponse.json({ error: "Senha incorreta" }, { status: 401 });
   }

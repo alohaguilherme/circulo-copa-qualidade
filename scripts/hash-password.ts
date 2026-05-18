@@ -7,6 +7,7 @@ if (!password) {
 }
 
 const hashed = await hash(password, 12);
-console.log("\nHash gerado (cole no ADMIN_PASSWORD_HASH do .env):\n");
-console.log(hashed);
+const encoded = Buffer.from(hashed).toString("base64");
+console.log("\nCole no ADMIN_PASSWORD_HASH do .env:\n");
+console.log(encoded);
 console.log();
