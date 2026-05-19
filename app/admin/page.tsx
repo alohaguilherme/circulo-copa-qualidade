@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -31,20 +32,21 @@ export default function AdminLoginPage() {
       padding: 24,
     }}>
       <div className="stad-a1" style={{ width: "100%", maxWidth: 340, textAlign: "center" }}>
-        {/* Badge */}
+        {/* Logo + título */}
         <div style={{ marginBottom: 28 }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            width: 60, height: 60, borderRadius: 16,
-            background: "linear-gradient(135deg, #FFE0CC, #FFD0B5)",
-            border: "1px solid rgba(251,75,0,0.35)",
-            fontSize: 28, marginBottom: 14,
-          }}>
-            🛡️
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
+            <Image
+              src="/assets/logo-vertical-laranja.png"
+              alt="Círculo Saúde"
+              width={400}
+              height={400}
+              priority
+              style={{ width: 130, height: "auto", objectFit: "contain" }}
+            />
           </div>
           <h1 style={{
             fontFamily: "var(--font-display)",
-            fontWeight: 900, fontSize: 28,
+            fontWeight: 900, fontSize: 24,
             color: "#1F1209", textTransform: "uppercase",
             letterSpacing: "0.5px", lineHeight: 1, marginBottom: 6,
           }}>
