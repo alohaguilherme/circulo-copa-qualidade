@@ -237,34 +237,14 @@ export default function LoginPage() {
 
           {/* ── BADGE ── */}
           <div className="lk-a1" style={{ textAlign: "center", marginBottom: "32px" }}>
-            <div
-              className="lk-badge"
-              style={{ display: "inline-block", marginBottom: "18px", position: "relative", width: 88, height: 100 }}
-            >
-              {/* Hexagonal shape */}
-              <svg width="88" height="100" viewBox="0 0 88 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="hexGold" x1="0" y1="0" x2="88" y2="100" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#1F1209" />
-                    <stop offset="50%" stopColor="#FB4B00" />
-                    <stop offset="100%" stopColor="#A53000" />
-                  </linearGradient>
-                  <linearGradient id="hexShine" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="rgba(31,18,9,0.18)" />
-                    <stop offset="40%" stopColor="rgba(255,255,255,0)" />
-                  </linearGradient>
-                </defs>
-                <path d="M44 2 L86 26 L86 74 L44 98 L2 74 L2 26 Z" fill="url(#hexGold)" />
-                <path d="M44 2 L86 26 L86 74 L44 98 L2 74 L2 26 Z" fill="url(#hexShine)" />
-              </svg>
-              {/* Círculo Saúde logo (símbolo + texto, branco) sobre o hexágono */}
+            <div className="lk-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
               <Image
-                src="/assets/logo-vertical-acroma-branco.png"
+                src="/assets/logo-laranja.png"
                 alt="Círculo Saúde"
-                fill
+                width={560}
+                height={200}
                 priority
-                sizes="88px"
-                style={{ objectFit: "contain", padding: "16px 14px", pointerEvents: "none" }}
+                style={{ width: 200, height: "auto", objectFit: "contain" }}
               />
             </div>
 
