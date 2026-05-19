@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 async function safeJson(res: Response): Promise<Record<string, string> | null> {
   try {
@@ -236,8 +237,11 @@ export default function LoginPage() {
 
           {/* ── BADGE ── */}
           <div className="lk-a1" style={{ textAlign: "center", marginBottom: "32px" }}>
-            <div className="lk-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
-              {/* Hexagonal gold shape */}
+            <div
+              className="lk-badge"
+              style={{ display: "inline-block", marginBottom: "18px", position: "relative", width: 88, height: 100 }}
+            >
+              {/* Hexagonal shape */}
               <svg width="88" height="100" viewBox="0 0 88 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="hexGold" x1="0" y1="0" x2="88" y2="100" gradientUnits="userSpaceOnUse">
@@ -252,8 +256,16 @@ export default function LoginPage() {
                 </defs>
                 <path d="M44 2 L86 26 L86 74 L44 98 L2 74 L2 26 Z" fill="url(#hexGold)" />
                 <path d="M44 2 L86 26 L86 74 L44 98 L2 74 L2 26 Z" fill="url(#hexShine)" />
-                <text x="44" y="60" textAnchor="middle" fontSize="36" dominantBaseline="middle">🏆</text>
               </svg>
+              {/* Círculo Saúde logo (símbolo + texto, branco) sobre o hexágono */}
+              <Image
+                src="/assets/logo-vertical-acroma-branco.png"
+                alt="Círculo Saúde"
+                fill
+                priority
+                sizes="88px"
+                style={{ objectFit: "contain", padding: "16px 14px", pointerEvents: "none" }}
+              />
             </div>
 
             <div>
@@ -274,7 +286,7 @@ export default function LoginPage() {
                 fontWeight: 900,
                 fontSize: "clamp(44px, 14vw, 58px)",
                 lineHeight: 0.88,
-                color: "#ffffff",
+                color: "#1F1209",
                 letterSpacing: "-1px",
                 textTransform: "uppercase",
                 margin: 0,
