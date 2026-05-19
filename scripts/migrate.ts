@@ -14,12 +14,14 @@ const PROTOCOLS = [
   { id: "meta-05-higiene-maos", name: "Meta 05: Higiene de Mãos", category: "meta" },
   { id: "meta-06-quedas", name: "Meta 06: Quedas", category: "meta" },
   { id: "meta-06-lesao-pressao", name: "Meta 06: Lesão por Pressão", category: "meta" },
-  { id: "prot-dor-toracica", name: "Prot. Dor Torácica", category: "protocolo" },
-  { id: "prot-avc", name: "Prot. AVC", category: "protocolo" },
-  { id: "prot-dor", name: "Prot. Dor", category: "protocolo" },
+  { id: "prot-tev", name: "Prot. TEV", category: "protocolo" },
   { id: "prot-sepse", name: "Prot. Sepse", category: "protocolo" },
-  { id: "prot-deterioracao", name: "Prot. Deterioração", category: "protocolo" },
+  { id: "prot-dor-toracica", name: "Prot. Dor Torácica", category: "protocolo" },
 ];
+
+// IDs antigos que precisam ser removidos do banco em migrações.
+// Se já houver user_stickers apontando pra esses ids, as linhas filhas também serão removidas.
+const REMOVED_PROTOCOL_IDS = ["prot-avc", "prot-dor", "prot-deterioracao"];
 
 async function main() {
   console.log("Creating tables...");
@@ -48,6 +50,12 @@ async function main() {
       PRIMARY KEY (user_id, protocol_id)
     );
   `);
+
+  console.log("Removing obsolete protocols...");
+  for (const id of REMOVED_PROTOCOL_IDS) {
+    await db.execute({ sql: "DELETE FROM user_stickers WHERE protocol_id = ?", args: [id] });
+    await db.execute({ sql: "DELETE FROM protocols WHERE id = ?", args: [id] });
+  }
 
   console.log("Seeding protocols...");
 

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { PROTOCOLS } from "@/lib/protocols";
+
+const TOTAL_PROTOCOLS = PROTOCOLS.length;
 
 type Completer = {
   id: string;
@@ -42,9 +45,9 @@ function ValidateButton({ user }: { user: Completer }) {
         style={{
           display: "flex", alignItems: "center", gap: 6,
           padding: "5px 12px", borderRadius: 20,
-          background: "rgba(34,197,94,0.12)",
-          border: "1px solid rgba(34,197,94,0.35)",
-          color: "#4ade80", cursor: "pointer",
+          background: "rgba(251,75,0,0.14)",
+          border: "1px solid rgba(251,75,0,0.4)",
+          color: "#FB4B00", cursor: "pointer",
           fontFamily: "var(--font-display)",
           fontWeight: 700, fontSize: 11,
           letterSpacing: "0.5px",
@@ -65,9 +68,9 @@ function ValidateButton({ user }: { user: Completer }) {
       style={{
         display: "flex", alignItems: "center", gap: 6,
         padding: "5px 12px", borderRadius: 20,
-        background: "rgba(242,183,5,0.1)",
-        border: "1px solid rgba(242,183,5,0.3)",
-        color: "#F2B705", cursor: "pointer",
+        background: "rgba(251,75,0,0.12)",
+        border: "1px solid rgba(251,75,0,0.4)",
+        color: "#FB4B00", cursor: "pointer",
         fontFamily: "var(--font-display)",
         fontWeight: 700, fontSize: 11,
         letterSpacing: "0.5px",
@@ -87,7 +90,7 @@ export function CompletedList({ completers }: { completers: Completer[] }) {
       <p style={{
         padding: "20px",
         fontSize: 13,
-        color: "rgba(134,239,172,0.35)",
+        color: "rgba(122,47,0,0.4)",
         fontFamily: "var(--font-body)",
         fontWeight: 300,
       }}>
@@ -115,7 +118,7 @@ export function CompletedList({ completers }: { completers: Completer[] }) {
               <p style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 800, fontSize: 14,
-                color: "#f0faf0", textTransform: "uppercase",
+                color: "#1F1209", textTransform: "uppercase",
                 letterSpacing: "0.3px",
                 whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
               }}>
@@ -124,15 +127,15 @@ export function CompletedList({ completers }: { completers: Completer[] }) {
               <span style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 700, fontSize: 9,
-                color: "#F2B705", letterSpacing: "1px",
-                background: "rgba(242,183,5,0.1)",
+                color: "#FB4B00", letterSpacing: "1px",
+                background: "rgba(251,75,0,0.12)",
                 padding: "2px 6px", borderRadius: 4,
                 flexShrink: 0,
               }}>
-                12/12
+                {TOTAL_PROTOCOLS}/{TOTAL_PROTOCOLS}
               </span>
             </div>
-            <p style={{ fontSize: 11, color: "rgba(134,239,172,0.45)" }}>
+            <p style={{ fontSize: 11, color: "rgba(122,47,0,0.5)" }}>
               {u.sector} · completo em {formatDate(u.completed_at)}
             </p>
           </div>

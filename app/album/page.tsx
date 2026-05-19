@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { PROTOCOLS } from "@/lib/protocols";
-import { LogoutButton } from "@/components/logout-button";
+import { PROTOCOLS, FIG_MAP } from "@/lib/protocols";
+import { UserMenu } from "@/components/user-menu";
 
 async function getUserData(userId: string) {
   const [user, stickers] = await Promise.all([
@@ -16,25 +17,6 @@ async function getUserData(userId: string) {
       stickers.rows.map((r) => [r.protocol_id as string, r.scanned_at as string])
     ),
   };
-}
-
-const EMOJI_MAP: Record<string, string> = {
-  "meta-01-identificacao": "🪪",
-  "meta-02-comunicacao": "📢",
-  "meta-03-medicamentos": "💊",
-  "meta-04-cirurgia-segura": "✂️",
-  "meta-05-higiene-maos": "🧴",
-  "meta-06-quedas": "🛡️",
-  "meta-06-lesao-pressao": "🩹",
-  "prot-dor-toracica": "❤️",
-  "prot-avc": "🧠",
-  "prot-dor": "💉",
-  "prot-sepse": "🦠",
-  "prot-deterioracao": "📈",
-};
-
-function getInitial(name: string): string {
-  return name.trim().charAt(0).toUpperCase();
 }
 
 function formatDate(iso: string): string {
@@ -62,42 +44,23 @@ export default async function AlbumPage() {
     <div className="stad-bg">
       {/* ── HEADER ── */}
       <header className="stad-a1 sticky top-0 z-20" style={{
-        background: "rgba(4,10,5,0.92)",
+        background: "rgba(255,248,242,0.92)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(34,197,94,0.12)",
+        borderBottom: "1px solid rgba(251,75,0,0.15)",
       }}>
         <div style={{ maxWidth: 520, margin: "0 auto", padding: "14px 20px" }}>
-          {/* User row */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              {/* Avatar */}
-              <div style={{
-                width: 38, height: 38, borderRadius: "50%",
-                background: "linear-gradient(135deg, #1a4d24, #0d2e14)",
-                border: "1.5px solid rgba(242,183,5,0.4)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "var(--font-display)",
-                fontWeight: 800, fontSize: 17, color: "#F2B705",
-                flexShrink: 0,
-              }}>
-                {getInitial(name)}
-              </div>
-              <div>
-                <p style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 800, fontSize: 16,
-                  color: "#f0faf0", lineHeight: 1.1,
-                  letterSpacing: "0.3px",
-                }}>
-                  {name}
-                </p>
-                <p style={{ fontSize: 11, color: "rgba(134,239,172,0.55)", letterSpacing: "0.5px" }}>
-                  {sector}
-                </p>
-              </div>
-            </div>
-            <LogoutButton />
+          {/* Logo + user menu */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+            <Image
+              src="/assets/logo-laranja.png"
+              alt="Círculo Saúde"
+              width={140}
+              height={50}
+              priority
+              style={{ height: 32, width: "auto", objectFit: "contain" }}
+            />
+            <UserMenu name={name} sector={sector} />
           </div>
 
           {/* Progress */}
@@ -106,7 +69,7 @@ export default async function AlbumPage() {
               <p style={{
                 fontFamily: "var(--font-display)",
                 fontSize: 11, fontWeight: 700,
-                color: "rgba(134,239,172,0.5)",
+                color: "rgba(122,47,0,0.6)",
                 letterSpacing: "2px", textTransform: "uppercase",
               }}>
                 Meu Álbum
@@ -115,14 +78,14 @@ export default async function AlbumPage() {
                 <span style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 900, fontSize: 36, lineHeight: 1,
-                  color: collected === 0 ? "rgba(255,255,255,0.3)" : "#F2B705",
+                  color: collected === 0 ? "rgba(31,18,9,0.28)" : "#FB4B00",
                 }}>
                   {collected}
                 </span>
                 <span style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 700, fontSize: 18,
-                  color: "rgba(255,255,255,0.25)",
+                  color: "rgba(31,18,9,0.22)",
                 }}>
                   /{total}
                 </span>
@@ -130,11 +93,11 @@ export default async function AlbumPage() {
             </div>
             {isComplete && (
               <div style={{
-                background: "linear-gradient(90deg, #C89B00, #F2B705)",
+                background: "linear-gradient(90deg, #A53000, #FB4B00)",
                 borderRadius: 20, padding: "5px 14px",
                 fontFamily: "var(--font-display)",
                 fontWeight: 800, fontSize: 11,
-                color: "#0a1a0b", letterSpacing: "1px",
+                color: "#FFFFFF", letterSpacing: "1px",
                 textTransform: "uppercase",
               }}>
                 🏆 Completo!
@@ -165,7 +128,7 @@ export default async function AlbumPage() {
               return (
                 <Link key={protocol.id} href={`/album/${protocol.id}`} style={{ textDecoration: "none" }}>
                   <StickerCard
-                    emoji={EMOJI_MAP[protocol.id] ?? "⭐"}
+                    figSrc={FIG_MAP[protocol.id]}
                     name={protocol.name}
                     collectedAt={collectedAt}
                     delay={i * 40}
@@ -187,7 +150,7 @@ export default async function AlbumPage() {
               return (
                 <Link key={protocol.id} href={`/album/${protocol.id}`} style={{ textDecoration: "none" }}>
                   <StickerCard
-                    emoji={EMOJI_MAP[protocol.id] ?? "⭐"}
+                    figSrc={FIG_MAP[protocol.id]}
                     name={protocol.name}
                     collectedAt={collectedAt}
                     delay={i * 40}
@@ -203,7 +166,7 @@ export default async function AlbumPage() {
           <p style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700, fontSize: 10,
-            color: "rgba(134,239,172,0.25)",
+            color: "rgba(122,47,0,0.3)",
             letterSpacing: "2.5px", textTransform: "uppercase",
           }}>
             Hospital do Círculo · 11 Jun — 16 Jul 2026
@@ -215,12 +178,12 @@ export default async function AlbumPage() {
 }
 
 function StickerCard({
-  emoji,
+  figSrc,
   name,
   collectedAt,
   delay,
 }: {
-  emoji: string;
+  figSrc?: string;
   name: string;
   collectedAt?: string;
   delay?: number;
@@ -231,103 +194,98 @@ function StickerCard({
     <div
       className={collected ? "sticker-collected" : "sticker-locked"}
       style={{
-        minHeight: 140,
-        padding: "14px 14px 12px",
+        padding: 8,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
+        gap: 8,
         position: "relative",
         overflow: "hidden",
+        animationDelay: delay ? `${delay}ms` : undefined,
       }}
     >
-      {collected ? (
-        <>
-          {/* Gold check badge */}
+      {/* Fig image */}
+      <div style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "3 / 5",
+        borderRadius: 10,
+        overflow: "hidden",
+        background: "#FFF1DC",
+      }}>
+        {figSrc && (
+          <Image
+            src={figSrc}
+            alt={name}
+            fill
+            sizes="(max-width: 520px) 50vw, 240px"
+            style={{
+              objectFit: "cover",
+              filter: collected ? "none" : "grayscale(0.9) brightness(0.95)",
+              opacity: collected ? 1 : 0.5,
+              transition: "filter 0.3s, opacity 0.3s",
+            }}
+          />
+        )}
+
+        {collected ? (
           <div style={{
-            position: "absolute", top: 10, right: 10,
-            width: 20, height: 20, borderRadius: "50%",
-            background: "rgba(242,183,5,0.15)",
-            border: "1px solid rgba(242,183,5,0.4)",
+            position: "absolute", top: 8, right: 8,
+            width: 24, height: 24, borderRadius: "50%",
+            background: "#FB4B00",
+            color: "#FFFFFF",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 10,
+            fontSize: 12, fontWeight: 900,
+            boxShadow: "0 2px 8px rgba(251,75,0,0.4)",
           }}>
             ✓
           </div>
-
-          {/* Emoji */}
-          <div style={{ fontSize: 38, lineHeight: 1 }}>{emoji}</div>
-
-          {/* Name + date */}
-          <div>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 800, fontSize: 12,
-              color: "#f0faf0", lineHeight: 1.2,
-              textTransform: "uppercase",
-              letterSpacing: "0.3px",
-              marginBottom: 6,
-            }}>
-              {name}
-            </p>
-            <div style={{
-              height: 1,
-              background: "linear-gradient(90deg, rgba(242,183,5,0.5), transparent)",
-              marginBottom: 5,
-            }} />
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700, fontSize: 10,
-              color: "#F2B705", letterSpacing: "1px",
-              textTransform: "uppercase",
-            }}>
-              {collectedAt ? formatDate(collectedAt) : "Coletada"}
-            </p>
-          </div>
-        </>
-      ) : (
-        <>
-          {/* Ghost emoji */}
+        ) : (
           <div style={{
-            fontSize: 42, lineHeight: 1, opacity: 0.08,
-            position: "absolute", top: 10, right: 10,
-            userSelect: "none", pointerEvents: "none",
-          }}>
-            {emoji}
-          </div>
-
-          {/* Lock icon */}
-          <div style={{
-            width: 28, height: 28, borderRadius: 8,
-            background: "rgba(34,197,94,0.08)",
-            border: "1px solid rgba(34,197,94,0.18)",
+            position: "absolute", inset: 0,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 14,
+            pointerEvents: "none",
           }}>
-            🔒
+            <div style={{
+              width: 44, height: 44, borderRadius: "50%",
+              background: "rgba(255,248,242,0.92)",
+              border: "1.5px solid rgba(251,75,0,0.3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 20,
+              boxShadow: "0 4px 12px rgba(31,18,9,0.15)",
+            }}>
+              🔒
+            </div>
           </div>
+        )}
+      </div>
 
-          {/* Name + cta */}
-          <div>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 800, fontSize: 12,
-              color: "rgba(240,250,240,0.6)",
-              lineHeight: 1.2, textTransform: "uppercase",
-              letterSpacing: "0.3px", marginBottom: 4,
-            }}>
-              {name}
-            </p>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700, fontSize: 9,
-              color: "rgba(34,197,94,0.5)",
-              letterSpacing: "1.5px", textTransform: "uppercase",
-            }}>
-              Escanear →
-            </p>
-          </div>
-        </>
-      )}
+      {/* Name + caption */}
+      <div style={{ padding: "0 4px 2px", minHeight: 42 }}>
+        <p style={{
+          fontFamily: "var(--font-display)",
+          fontWeight: 800, fontSize: 11,
+          color: collected ? "#1F1209" : "rgba(31,18,9,0.6)",
+          lineHeight: 1.2,
+          textTransform: "uppercase",
+          letterSpacing: "0.3px",
+          marginBottom: 3,
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+        }}>
+          {name}
+        </p>
+        <p style={{
+          fontFamily: "var(--font-display)",
+          fontWeight: 700, fontSize: 9,
+          color: "#FB4B00",
+          letterSpacing: "1.2px",
+          textTransform: "uppercase",
+        }}>
+          {collected ? (collectedAt ? formatDate(collectedAt) : "Coletada") : "Escanear →"}
+        </p>
+      </div>
     </div>
   );
 }

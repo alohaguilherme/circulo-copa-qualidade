@@ -2,9 +2,10 @@
 
 import { useParams, useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
-import { PROTOCOLS } from "@/lib/protocols";
+import { PROTOCOLS, FIG_MAP } from "@/lib/protocols";
 import { QrScanner } from "@/components/qr-scanner";
 import Link from "next/link";
+import Image from "next/image";
 
 type ScanResult = {
   ok?: boolean;
@@ -14,21 +15,6 @@ type ScanResult = {
   error?: string;
 };
 
-const EMOJI_MAP: Record<string, string> = {
-  "meta-01-identificacao": "🪪",
-  "meta-02-comunicacao": "📢",
-  "meta-03-medicamentos": "💊",
-  "meta-04-cirurgia-segura": "✂️",
-  "meta-05-higiene-maos": "🧴",
-  "meta-06-quedas": "🛡️",
-  "meta-06-lesao-pressao": "🩹",
-  "prot-dor-toracica": "❤️",
-  "prot-avc": "🧠",
-  "prot-dor": "💉",
-  "prot-sepse": "🦠",
-  "prot-deterioracao": "📈",
-};
-
 function ProtocolContent() {
   const { protocolId } = useParams<{ protocolId: string }>();
   const searchParams = useSearchParams();
@@ -36,7 +22,7 @@ function ProtocolContent() {
   const [loading, setLoading] = useState(false);
 
   const protocol = PROTOCOLS.find((p) => p.id === protocolId);
-  const emoji = protocol ? (EMOJI_MAP[protocol.id] ?? "⭐") : "⭐";
+  const figSrc = protocol ? FIG_MAP[protocol.id] : undefined;
 
   useEffect(() => {
     const token = searchParams.get("token");
@@ -55,7 +41,7 @@ function ProtocolContent() {
   if (!protocol) {
     return (
       <div className="stad-bg" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ color: "rgba(134,239,172,0.6)", fontFamily: "var(--font-display)", fontSize: 18 }}>
+        <p style={{ color: "rgba(122,47,0,0.7)", fontFamily: "var(--font-display)", fontSize: 18 }}>
           Protocolo não encontrado.
         </p>
       </div>
@@ -73,7 +59,7 @@ function ProtocolContent() {
             display: "inline-flex", alignItems: "center", gap: 6,
             fontFamily: "var(--font-display)",
             fontWeight: 700, fontSize: 11,
-            color: "rgba(134,239,172,0.55)",
+            color: "rgba(122,47,0,0.55)",
             letterSpacing: "1.5px", textTransform: "uppercase",
             textDecoration: "none",
             marginBottom: 20,
@@ -90,17 +76,24 @@ function ProtocolContent() {
         >
           <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
             <div style={{
-              fontSize: 56, lineHeight: 1,
-              filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.4))",
+              position: "relative",
+              width: 80,
+              aspectRatio: "3 / 5",
               flexShrink: 0,
+              borderRadius: 10,
+              overflow: "hidden",
+              boxShadow: "0 4px 12px rgba(31,18,9,0.15)",
+              background: "#FFF1DC",
             }}>
-              {emoji}
+              {figSrc && (
+                <Image src={figSrc} alt={protocol.name} fill sizes="80px" style={{ objectFit: "cover" }} />
+              )}
             </div>
             <div style={{ minWidth: 0 }}>
               <p style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 700, fontSize: 10,
-                color: "#F2B705",
+                color: "#FB4B00",
                 letterSpacing: "2px", textTransform: "uppercase",
                 marginBottom: 4,
               }}>
@@ -109,7 +102,7 @@ function ProtocolContent() {
               <h1 style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 900, fontSize: 22,
-                color: "#f0faf0", lineHeight: 1.1,
+                color: "#1F1209", lineHeight: 1.1,
                 letterSpacing: "0.3px",
                 textTransform: "uppercase",
                 marginBottom: 8,
@@ -117,7 +110,7 @@ function ProtocolContent() {
                 {protocol.name}
               </h1>
               <p style={{
-                fontSize: 13, color: "rgba(134,239,172,0.65)",
+                fontSize: 13, color: "rgba(122,47,0,0.65)",
                 lineHeight: 1.55, fontWeight: 300,
               }}>
                 {protocol.description}
@@ -130,8 +123,8 @@ function ProtocolContent() {
         <div
           className="stad-a3"
           style={{
-            background: "rgba(4,11,6,0.6)",
-            border: "1px solid rgba(255,255,255,0.06)",
+            background: "rgba(255,248,242,0.6)",
+            border: "1px solid rgba(31,18,9,0.06)",
             borderRadius: 12, padding: "12px 16px",
             marginBottom: 0,
           }}
@@ -139,7 +132,7 @@ function ProtocolContent() {
           <p style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700, fontSize: 9,
-            color: "rgba(134,239,172,0.4)",
+            color: "rgba(122,47,0,0.4)",
             letterSpacing: "2px", textTransform: "uppercase",
             marginBottom: 8,
           }}>
@@ -152,9 +145,9 @@ function ProtocolContent() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 700, fontSize: 11,
-                  background: "rgba(242,183,5,0.1)",
-                  border: "1px solid rgba(242,183,5,0.25)",
-                  color: "#F2B705",
+                  background: "rgba(251,75,0,0.1)",
+                  border: "1px solid rgba(251,75,0,0.25)",
+                  color: "#FB4B00",
                   borderRadius: 20, padding: "3px 10px",
                   letterSpacing: "0.5px",
                 }}
@@ -174,7 +167,7 @@ function ProtocolContent() {
           <div className="stad-a4">
             <p style={{
               textAlign: "center",
-              fontSize: 13, color: "rgba(134,239,172,0.5)",
+              fontSize: 13, color: "rgba(122,47,0,0.5)",
               lineHeight: 1.6, marginBottom: 16,
               fontWeight: 300,
             }}>
@@ -185,9 +178,9 @@ function ProtocolContent() {
         ) : result.error ? (
           <ErrorCard message={result.error} onRetry={() => setResult(null)} />
         ) : result.alreadyCollected ? (
-          <AlreadyCollectedCard emoji={emoji} name={protocol.name} />
+          <AlreadyCollectedCard figSrc={figSrc} name={protocol.name} />
         ) : (
-          <SuccessCard emoji={emoji} name={protocol.name} total={result.totalCollected ?? 0} />
+          <SuccessCard figSrc={figSrc} name={protocol.name} total={result.totalCollected ?? 0} />
         )}
       </main>
     </div>
@@ -198,7 +191,7 @@ export default function ProtocolPage() {
   return (
     <Suspense fallback={
       <div className="stad-bg" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ color: "rgba(134,239,172,0.5)", fontFamily: "var(--font-display)", fontSize: 16, letterSpacing: 2 }}>
+        <div style={{ color: "rgba(122,47,0,0.5)", fontFamily: "var(--font-display)", fontSize: 16, letterSpacing: 2 }}>
           CARREGANDO...
         </div>
       </div>
@@ -214,7 +207,7 @@ function LoadingCard() {
   return (
     <div style={{
       textAlign: "center", padding: "40px 20px",
-      color: "rgba(134,239,172,0.5)",
+      color: "rgba(122,47,0,0.5)",
       fontFamily: "var(--font-display)",
       fontSize: 14, letterSpacing: "2px",
       textTransform: "uppercase",
@@ -236,12 +229,12 @@ function ErrorCard({ message, onRetry }: { message: string; onRetry: () => void 
       <p style={{
         fontFamily: "var(--font-display)",
         fontWeight: 800, fontSize: 16,
-        color: "#fca5a5", textTransform: "uppercase",
+        color: "#DC2626", textTransform: "uppercase",
         letterSpacing: "0.5px", marginBottom: 6,
       }}>
         QR inválido
       </p>
-      <p style={{ fontSize: 13, color: "rgba(252,165,165,0.7)", marginBottom: 20, fontWeight: 300 }}>
+      <p style={{ fontSize: 13, color: "rgba(127,29,29,0.7)", marginBottom: 20, fontWeight: 300 }}>
         {message}
       </p>
       <button
@@ -255,24 +248,33 @@ function ErrorCard({ message, onRetry }: { message: string; onRetry: () => void 
   );
 }
 
-function AlreadyCollectedCard({ emoji, name }: { emoji: string; name: string }) {
+function AlreadyCollectedCard({ figSrc, name }: { figSrc?: string; name: string }) {
   return (
     <div style={{
-      background: "rgba(120,90,0,0.2)",
-      border: "1px solid rgba(242,183,5,0.3)",
+      background: "rgba(255,224,204,0.6)",
+      border: "1px solid rgba(251,75,0,0.3)",
       borderRadius: 18, padding: "28px 24px",
       textAlign: "center",
     }}>
-      <div style={{ fontSize: 56, marginBottom: 12 }}>{emoji}</div>
+      <div style={{
+        position: "relative",
+        width: 110, aspectRatio: "3 / 5",
+        margin: "0 auto 14px",
+        borderRadius: 12, overflow: "hidden",
+        background: "#FFF1DC",
+        boxShadow: "0 6px 18px rgba(31,18,9,0.15)",
+      }}>
+        {figSrc && <Image src={figSrc} alt={name} fill sizes="110px" style={{ objectFit: "cover" }} />}
+      </div>
       <p style={{
         fontFamily: "var(--font-display)",
         fontWeight: 900, fontSize: 20,
-        color: "#F2B705", textTransform: "uppercase",
+        color: "#FB4B00", textTransform: "uppercase",
         letterSpacing: "0.5px", marginBottom: 4,
       }}>
         Já coletada!
       </p>
-      <p style={{ fontSize: 13, color: "rgba(242,183,5,0.6)", marginBottom: 20, fontWeight: 300 }}>
+      <p style={{ fontSize: 13, color: "rgba(251,75,0,0.6)", marginBottom: 20, fontWeight: 300 }}>
         Você já tem {name} no seu álbum.
       </p>
       <Link href="/album" style={{ textDecoration: "none" }}>
@@ -284,53 +286,63 @@ function AlreadyCollectedCard({ emoji, name }: { emoji: string; name: string }) 
   );
 }
 
-function SuccessCard({ emoji, name, total }: { emoji: string; name: string; total: number }) {
-  const isComplete = total === 12;
+function SuccessCard({ figSrc, name, total }: { figSrc?: string; name: string; total: number }) {
+  const totalProtocols = PROTOCOLS.length;
+  const isComplete = total === totalProtocols;
   return (
     <div style={{
-      background: "linear-gradient(145deg, rgba(10,28,13,0.95), rgba(6,18,8,0.95))",
-      border: "1px solid rgba(242,183,5,0.35)",
-      borderTop: "3px solid #F2B705",
+      background: "linear-gradient(145deg, rgba(255,255,255,0.98), rgba(255,248,242,0.98))",
+      border: "1px solid rgba(251,75,0,0.35)",
+      borderTop: "3px solid #FB4B00",
       borderRadius: 18, padding: "32px 24px",
       textAlign: "center",
-      boxShadow: "0 12px 48px rgba(0,0,0,0.5), 0 0 40px rgba(242,183,5,0.08)",
+      boxShadow: "0 12px 48px rgba(0,0,0,0.5), 0 0 40px rgba(251,75,0,0.08)",
     }}>
-      <div style={{ fontSize: 72, marginBottom: 4, lineHeight: 1 }}>{emoji}</div>
+      <div style={{
+        position: "relative",
+        width: 140, aspectRatio: "3 / 5",
+        margin: "0 auto 16px",
+        borderRadius: 14, overflow: "hidden",
+        background: "#FFF1DC",
+        boxShadow: "0 8px 24px rgba(31,18,9,0.18), 0 0 0 3px rgba(251,75,0,0.18)",
+      }}>
+        {figSrc && <Image src={figSrc} alt={name} fill sizes="140px" style={{ objectFit: "cover" }} />}
+      </div>
 
       <p style={{
         fontFamily: "var(--font-display)",
         fontWeight: 900, fontSize: 28,
-        color: "#F2B705",
+        color: "#FB4B00",
         textTransform: "uppercase",
         letterSpacing: "0.5px", lineHeight: 1,
         marginBottom: 4,
       }}>
         Figurinha coletada!
       </p>
-      <p style={{ fontSize: 13, color: "rgba(134,239,172,0.6)", marginBottom: 20, fontWeight: 300 }}>
+      <p style={{ fontSize: 13, color: "rgba(122,47,0,0.7)", marginBottom: 20, fontWeight: 300 }}>
         {name}
       </p>
 
       {/* Progress */}
       <div style={{
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.07)",
+        background: "rgba(31,18,9,0.04)",
+        border: "1px solid rgba(31,18,9,0.06)",
         borderRadius: 12, padding: "12px 16px",
         marginBottom: 20,
       }}>
         <p style={{
           fontFamily: "var(--font-display)",
           fontWeight: 800, fontSize: 14,
-          color: isComplete ? "#F2B705" : "#f0faf0",
+          color: isComplete ? "#FB4B00" : "#1F1209",
           letterSpacing: "0.5px",
         }}>
-          {total}/12 figurinhas no álbum
+          {total}/{totalProtocols} figurinhas no álbum
         </p>
         {isComplete && (
           <p style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700, fontSize: 11,
-            color: "#F2B705", letterSpacing: "1.5px",
+            color: "#FB4B00", letterSpacing: "1.5px",
             textTransform: "uppercase", marginTop: 4,
           }}>
             🏆 Álbum completo! Fale com a coordenação!

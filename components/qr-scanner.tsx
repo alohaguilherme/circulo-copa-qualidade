@@ -126,7 +126,7 @@ export function QrScanner({ protocolId, onResult }: Props) {
         <p style={{
           marginTop: 10,
           fontSize: 13,
-          color: "#fca5a5",
+          color: "#DC2626",
           textAlign: "center",
           fontFamily: "var(--font-body)",
         }}>

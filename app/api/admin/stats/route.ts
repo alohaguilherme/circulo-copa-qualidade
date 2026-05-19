@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PROTOCOLS } from "@/lib/protocols";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,7 @@ export async function GET() {
     db.execute("SELECT COUNT(*) as count FROM users"),
     db.execute(`
       SELECT COUNT(DISTINCT user_id) as count FROM user_stickers
-      GROUP BY user_id HAVING COUNT(*) = 12
+      GROUP BY user_id HAVING COUNT(*) = ${PROTOCOLS.length}
     `),
     db.execute(`
       SELECT u.sector, COUNT(DISTINCT u.id) as user_count,

@@ -1,8 +1,12 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getAdminSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PROTOCOLS } from "@/lib/protocols";
 import { CompletedList } from "./completed-list";
+
+const TOTAL_PROTOCOLS = PROTOCOLS.length;
 
 async function getStats() {
   const [totalUsers, sectorStats, topUsers, completedAlbums, completers] = await Promise.all([
@@ -19,7 +23,7 @@ async function getStats() {
     `),
     db.execute(`
       SELECT COUNT(*) as count FROM (
-        SELECT user_id FROM user_stickers GROUP BY user_id HAVING COUNT(*) = 12
+        SELECT user_id FROM user_stickers GROUP BY user_id HAVING COUNT(*) = ${TOTAL_PROTOCOLS}
       )
     `),
     db.execute(`
@@ -28,7 +32,7 @@ async function getStats() {
       FROM users u
       JOIN user_stickers s ON s.user_id = u.id
       GROUP BY u.id
-      HAVING COUNT(s.protocol_id) = 12
+      HAVING COUNT(s.protocol_id) = ${TOTAL_PROTOCOLS}
       ORDER BY completed_at ASC
     `),
   ]);
@@ -53,30 +57,44 @@ export default async function AdminDashboard() {
     <div className="stad-bg" style={{ minHeight: "100svh" }}>
       {/* ── HEADER ── */}
       <header style={{
-        background: "rgba(4,10,5,0.92)",
+        background: "rgba(255,248,242,0.92)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(34,197,94,0.12)",
+        borderBottom: "1px solid rgba(251,75,0,0.15)",
         padding: "16px 24px",
       }}>
-        <div style={{ maxWidth: 760, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <h1 style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 900, fontSize: 20,
-              color: "#f0faf0", textTransform: "uppercase",
-              letterSpacing: "0.5px", lineHeight: 1,
-            }}>
-              Copa da Qualidade
-            </h1>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 700, fontSize: 10,
-              color: "#F2B705", letterSpacing: "2px",
-              textTransform: "uppercase", marginTop: 3,
-            }}>
-              Painel Administrativo
-            </p>
+        <div style={{ maxWidth: 760, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
+            <Image
+              src="/assets/logo-laranja.png"
+              alt="Círculo Saúde"
+              width={140}
+              height={50}
+              priority
+              style={{ height: 32, width: "auto", objectFit: "contain", flexShrink: 0 }}
+            />
+            <div style={{
+              width: 1, height: 32, background: "rgba(31,18,9,0.12)", flexShrink: 0,
+            }} />
+            <div style={{ minWidth: 0 }}>
+              <h1 style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 900, fontSize: 18,
+                color: "#1F1209", textTransform: "uppercase",
+                letterSpacing: "0.5px", lineHeight: 1,
+                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+              }}>
+                Copa da Qualidade
+              </h1>
+              <p style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700, fontSize: 10,
+                color: "#FB4B00", letterSpacing: "2px",
+                textTransform: "uppercase", marginTop: 3,
+              }}>
+                Painel Administrativo
+              </p>
+            </div>
           </div>
           <Link href="/admin/protocols" style={{ textDecoration: "none" }}>
             <button className="stad-gold-btn" style={{
@@ -97,13 +115,13 @@ export default async function AdminDashboard() {
             icon="👥"
             value={String(stats.totalUsers)}
             label="Participantes"
-            accent="rgba(34,197,94,0.5)"
+            accent="rgba(251,75,0,0.55)"
           />
           <StatCard
             icon="🏆"
             value={String(stats.completedAlbums)}
             label="Álbuns completos"
-            accent="rgba(242,183,5,0.5)"
+            accent="rgba(251,75,0,0.55)"
             gold
           />
         </div>
@@ -114,21 +132,21 @@ export default async function AdminDashboard() {
             Mais engajados
           </div>
           <div style={{
-            background: "rgba(4,11,6,0.7)",
-            border: "1px solid rgba(255,255,255,0.06)",
+            background: "rgba(255,248,242,0.7)",
+            border: "1px solid rgba(31,18,9,0.06)",
             borderRadius: 16, overflow: "hidden",
           }}>
             {stats.topUsers.length === 0 ? (
               <p style={{
                 padding: "20px 20px", fontSize: 13,
-                color: "rgba(134,239,172,0.35)",
+                color: "rgba(122,47,0,0.4)",
                 fontFamily: "var(--font-body)", fontWeight: 300,
               }}>
                 Nenhum participante ainda.
               </p>
             ) : (
               stats.topUsers.map((u, i) => {
-                const pct = ((u.collected as number) / 12) * 100;
+                const pct = ((u.collected as number) / TOTAL_PROTOCOLS) * 100;
                 const isTop = i === 0;
                 return (
                   <div key={i} className="admin-row" style={{ padding: "13px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
@@ -136,7 +154,7 @@ export default async function AdminDashboard() {
                       <span style={{
                         fontFamily: "var(--font-display)",
                         fontWeight: 900, fontSize: 13,
-                        color: isTop ? "#F2B705" : "rgba(255,255,255,0.2)",
+                        color: isTop ? "#FB4B00" : "rgba(31,18,9,0.18)",
                         width: 18, flexShrink: 0,
                       }}>
                         {i + 1}
@@ -145,24 +163,24 @@ export default async function AdminDashboard() {
                         <p style={{
                           fontFamily: "var(--font-display)",
                           fontWeight: 800, fontSize: 14,
-                          color: "#f0faf0", textTransform: "uppercase",
+                          color: "#1F1209", textTransform: "uppercase",
                           letterSpacing: "0.3px",
                           whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                         }}>
                           {String(u.name)}
                         </p>
-                        <p style={{ fontSize: 11, color: "rgba(134,239,172,0.45)" }}>
+                        <p style={{ fontSize: 11, color: "rgba(122,47,0,0.5)" }}>
                           {String(u.sector)}
                         </p>
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-                      <div style={{ width: 72, height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, overflow: "hidden" }}>
+                      <div style={{ width: 72, height: 4, background: "rgba(31,18,9,0.06)", borderRadius: 2, overflow: "hidden" }}>
                         <div style={{
                           height: "100%", width: `${pct}%`,
                           background: pct === 100
-                            ? "linear-gradient(90deg, #C89B00, #F2B705)"
-                            : "rgba(34,197,94,0.6)",
+                            ? "linear-gradient(90deg, #A53000, #FB4B00)"
+                            : "rgba(251,75,0,0.6)",
                           borderRadius: 2,
                           transition: "width 0.4s ease",
                         }} />
@@ -170,10 +188,10 @@ export default async function AdminDashboard() {
                       <span style={{
                         fontFamily: "var(--font-display)",
                         fontWeight: 800, fontSize: 13,
-                        color: pct === 100 ? "#F2B705" : "rgba(134,239,172,0.7)",
+                        color: pct === 100 ? "#FB4B00" : "rgba(251,75,0,0.7)",
                         minWidth: 36, textAlign: "right",
                       }}>
-                        {String(u.collected)}/12
+                        {String(u.collected)}/{TOTAL_PROTOCOLS}
                       </span>
                     </div>
                   </div>
@@ -189,8 +207,8 @@ export default async function AdminDashboard() {
             Álbuns completos — validação
           </div>
           <div style={{
-            background: "rgba(4,11,6,0.7)",
-            border: "1px solid rgba(242,183,5,0.12)",
+            background: "rgba(255,248,242,0.7)",
+            border: "1px solid rgba(251,75,0,0.15)",
             borderRadius: 16, overflow: "hidden",
           }}>
             <CompletedList completers={stats.completers} />
@@ -203,12 +221,12 @@ export default async function AdminDashboard() {
             Engajamento por setor
           </div>
           <div style={{
-            background: "rgba(4,11,6,0.7)",
-            border: "1px solid rgba(255,255,255,0.06)",
+            background: "rgba(255,248,242,0.7)",
+            border: "1px solid rgba(31,18,9,0.06)",
             borderRadius: 16, overflow: "hidden",
           }}>
             {stats.sectorStats.length === 0 ? (
-              <p style={{ padding: "20px 20px", fontSize: 13, color: "rgba(134,239,172,0.35)", fontWeight: 300 }}>
+              <p style={{ padding: "20px 20px", fontSize: 13, color: "rgba(122,47,0,0.4)", fontWeight: 300 }}>
                 Nenhum dado ainda.
               </p>
             ) : (
@@ -218,12 +236,12 @@ export default async function AdminDashboard() {
                     <p style={{
                       fontFamily: "var(--font-display)",
                       fontWeight: 800, fontSize: 14,
-                      color: "#f0faf0", textTransform: "uppercase",
+                      color: "#1F1209", textTransform: "uppercase",
                       letterSpacing: "0.3px",
                     }}>
                       {String(s.sector)}
                     </p>
-                    <p style={{ fontSize: 11, color: "rgba(134,239,172,0.4)" }}>
+                    <p style={{ fontSize: 11, color: "rgba(122,47,0,0.5)" }}>
                       {String(s.user_count)} participante(s)
                     </p>
                   </div>
@@ -231,14 +249,14 @@ export default async function AdminDashboard() {
                     <p style={{
                       fontFamily: "var(--font-display)",
                       fontWeight: 900, fontSize: 20,
-                      color: "#F2B705", lineHeight: 1,
+                      color: "#FB4B00", lineHeight: 1,
                     }}>
                       {String(s.sticker_count)}
                     </p>
                     <p style={{
                       fontFamily: "var(--font-display)",
                       fontWeight: 700, fontSize: 9,
-                      color: "rgba(242,183,5,0.5)",
+                      color: "rgba(251,75,0,0.55)",
                       letterSpacing: "1.5px", textTransform: "uppercase",
                     }}>
                       figurinhas
@@ -266,7 +284,7 @@ function StatCard({
 }) {
   return (
     <div style={{
-      background: "rgba(4,11,6,0.7)",
+      background: "rgba(255,248,242,0.7)",
       border: `1px solid ${accent}`,
       borderRadius: 16, padding: "20px 18px",
       position: "relative", overflow: "hidden",
@@ -282,14 +300,14 @@ function StatCard({
       <p style={{
         fontFamily: "var(--font-display)",
         fontWeight: 900, fontSize: 42, lineHeight: 1,
-        color: gold ? "#F2B705" : "#f0faf0",
+        color: gold ? "#FB4B00" : "#1F1209",
       }}>
         {value}
       </p>
       <p style={{
         fontFamily: "var(--font-display)",
         fontWeight: 700, fontSize: 10,
-        color: "rgba(134,239,172,0.45)",
+        color: "rgba(122,47,0,0.5)",
         letterSpacing: "1.5px", textTransform: "uppercase",
         marginTop: 4,
       }}>

@@ -35,10 +35,10 @@ const SECTORS = [
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "13px 16px",
-  background: "rgba(255,255,255,0.04)",
-  border: "1px solid rgba(255,255,255,0.09)",
+  background: "rgba(31,18,9,0.04)",
+  border: "1px solid rgba(31,18,9,0.09)",
   borderRadius: "10px",
-  color: "#f0faf0",
+  color: "#1F1209",
   fontSize: "16px",
   outline: "none",
   boxSizing: "border-box",
@@ -50,7 +50,7 @@ const labelStyle: React.CSSProperties = {
   display: "block",
   fontSize: "10px",
   fontWeight: 600,
-  color: "rgba(134,239,172,0.55)",
+  color: "rgba(122,47,0,0.55)",
   letterSpacing: "1.5px",
   textTransform: "uppercase",
   marginBottom: "7px",
@@ -64,8 +64,8 @@ function InputField(props: React.InputHTMLAttributes<HTMLInputElement>) {
       {...props}
       style={{
         ...inputStyle,
-        borderColor: focused ? "rgba(242,183,5,0.55)" : "rgba(255,255,255,0.09)",
-        boxShadow: focused ? "0 0 0 3px rgba(242,183,5,0.1), 0 0 12px rgba(242,183,5,0.08)" : "none",
+        borderColor: focused ? "rgba(251,75,0,0.55)" : "rgba(31,18,9,0.09)",
+        boxShadow: focused ? "0 0 0 3px rgba(251,75,0,0.1), 0 0 12px rgba(251,75,0,0.08)" : "none",
         ...(props.disabled ? { opacity: 0.45, cursor: "not-allowed" } : {}),
       }}
       onFocus={(e) => { setFocused(true); props.onFocus?.(e); }}
@@ -81,11 +81,11 @@ function SelectField(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
       {...props}
       style={{
         ...inputStyle,
-        borderColor: focused ? "rgba(242,183,5,0.55)" : "rgba(255,255,255,0.09)",
-        boxShadow: focused ? "0 0 0 3px rgba(242,183,5,0.1)" : "none",
+        borderColor: focused ? "rgba(251,75,0,0.55)" : "rgba(31,18,9,0.09)",
+        boxShadow: focused ? "0 0 0 3px rgba(251,75,0,0.1)" : "none",
         appearance: "none",
         WebkitAppearance: "none",
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(134,239,172,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(122,47,0,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right 14px center",
         paddingRight: "38px",
@@ -150,8 +150,8 @@ export default function LoginPage() {
           50% { transform: translateY(-7px) rotate(1deg); }
         }
         @keyframes lk-pulse-glow {
-          0%,100% { filter: drop-shadow(0 0 14px rgba(242,183,5,0.35)); }
-          50% { filter: drop-shadow(0 0 28px rgba(242,183,5,0.65)); }
+          0%,100% { filter: drop-shadow(0 0 14px rgba(251,75,0,0.35)); }
+          50% { filter: drop-shadow(0 0 28px rgba(251,75,0,0.65)); }
         }
         @keyframes lk-up {
           from { opacity:0; transform:translateY(18px); }
@@ -171,28 +171,28 @@ export default function LoginPage() {
         .lk-a3 { animation: lk-up 0.55s 0.18s ease both; }
         .lk-a4 { animation: lk-up 0.55s 0.27s ease both; }
         .lk-btn {
-          background: linear-gradient(90deg, #D4A005 0%, #F2B705 30%, #FFCF2F 55%, #F2B705 80%, #D4A005 100%);
+          background: linear-gradient(90deg, #A53000 0%, #FB4B00 30%, #FFE0CC 55%, #FB4B00 80%, #A53000 100%);
           background-size: 250% auto;
           transition: background-position 0.55s ease, transform 0.12s ease, box-shadow 0.2s ease;
         }
         .lk-btn:hover:not(:disabled) {
           background-position: right center;
-          box-shadow: 0 6px 28px rgba(242,183,5,0.38);
+          box-shadow: 0 6px 28px rgba(251,75,0,0.38);
           transform: translateY(-1px);
         }
         .lk-btn:active:not(:disabled) { transform: translateY(0) scale(0.985); }
         .lk-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         input:-webkit-autofill,
         input:-webkit-autofill:focus {
-          -webkit-box-shadow: 0 0 0 1000px #060f08 inset !important;
-          -webkit-text-fill-color: #f0faf0 !important;
-          caret-color: #f0faf0;
+          -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+          -webkit-text-fill-color: #1F1209 !important;
+          caret-color: #1F1209;
         }
-        select option { background: #0d1f10; color: #f0faf0; }
+        select option { background: #FFFFFF; color: #1F1209; }
         .lk-back-btn {
           background: transparent;
           border: none;
-          color: rgba(134,239,172,0.5);
+          color: rgba(122,47,0,0.5);
           font-size: 13px;
           cursor: pointer;
           padding: 8px;
@@ -200,15 +200,15 @@ export default function LoginPage() {
           transition: color 0.2s;
           font-family: 'DM Sans', sans-serif;
         }
-        .lk-back-btn:hover { color: rgba(134,239,172,0.85); }
+        .lk-back-btn:hover { color: rgba(122,47,0,0.85); }
 
         /* Grass lines — subtle */
         .lk-bg {
-          background-color: #040d06;
+          background-color: #FFF8F2;
           background-image:
             url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='32' viewBox='0 0 28 32'%3E%3Cpath d='M14 0 L28 8 L28 24 L14 32 L0 24 L0 8 Z' fill='none' stroke='rgba(255,255,255,0.028)' stroke-width='0.6'/%3E%3C/svg%3E"),
-            radial-gradient(ellipse 70% 55% at 50% -5%, rgba(22,163,74,0.22) 0%, transparent 65%),
-            radial-gradient(ellipse 40% 30% at 50% 110%, rgba(34,197,94,0.07) 0%, transparent 70%);
+            radial-gradient(ellipse 70% 55% at 50% -5%, rgba(251,75,0,0.22) 0%, transparent 65%),
+            radial-gradient(ellipse 40% 30% at 50% 110%, rgba(251,75,0,0.07) 0%, transparent 70%);
         }
       `}</style>
 
@@ -229,7 +229,7 @@ export default function LoginPage() {
         <div style={{
           position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",
           width: "600px", height: "300px", pointerEvents: "none",
-          background: "radial-gradient(ellipse at 50% 0%, rgba(242,183,5,0.07) 0%, transparent 60%)",
+          background: "radial-gradient(ellipse at 50% 0%, rgba(251,75,0,0.07) 0%, transparent 60%)",
         }} />
 
         <div style={{ width: "100%", maxWidth: "360px" }}>
@@ -241,12 +241,12 @@ export default function LoginPage() {
               <svg width="88" height="100" viewBox="0 0 88 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="hexGold" x1="0" y1="0" x2="88" y2="100" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#FFD94A" />
-                    <stop offset="50%" stopColor="#F2B705" />
-                    <stop offset="100%" stopColor="#C98B00" />
+                    <stop offset="0%" stopColor="#1F1209" />
+                    <stop offset="50%" stopColor="#FB4B00" />
+                    <stop offset="100%" stopColor="#A53000" />
                   </linearGradient>
                   <linearGradient id="hexShine" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="rgba(255,255,255,0.22)" />
+                    <stop offset="0%" stopColor="rgba(31,18,9,0.18)" />
                     <stop offset="40%" stopColor="rgba(255,255,255,0)" />
                   </linearGradient>
                 </defs>
@@ -262,7 +262,7 @@ export default function LoginPage() {
                 fontWeight: 900,
                 fontSize: "clamp(44px, 14vw, 58px)",
                 lineHeight: 0.88,
-                color: "#F2B705",
+                color: "#FB4B00",
                 letterSpacing: "-1px",
                 textTransform: "uppercase",
                 margin: 0,
@@ -285,7 +285,7 @@ export default function LoginPage() {
                 fontFamily: "'Barlow Condensed', sans-serif",
                 fontWeight: 700,
                 fontSize: "12px",
-                color: "rgba(134,239,172,0.6)",
+                color: "rgba(122,47,0,0.6)",
                 letterSpacing: "3.5px",
                 textTransform: "uppercase",
                 marginTop: "10px",
@@ -299,13 +299,13 @@ export default function LoginPage() {
           <div
             className="lk-a2"
             style={{
-              background: "rgba(4,13,6,0.86)",
+              background: "rgba(255,248,242,0.86)",
               backdropFilter: "blur(24px)",
               WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(34,197,94,0.18)",
+              border: "1px solid rgba(251,75,0,0.18)",
               borderRadius: "20px",
               padding: "28px 26px",
-              boxShadow: "0 28px 56px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)",
+              boxShadow: "0 28px 56px rgba(0,0,0,0.5), inset 0 1px 0 rgba(31,18,9,0.04)",
             }}
           >
             {isNew === null ? (
@@ -314,7 +314,7 @@ export default function LoginPage() {
                   fontFamily: "'Barlow Condensed', sans-serif",
                   fontWeight: 800,
                   fontSize: "22px",
-                  color: "#f0faf0",
+                  color: "#1F1209",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                   margin: "0 0 4px",
@@ -323,7 +323,7 @@ export default function LoginPage() {
                 </h2>
                 <p style={{
                   fontSize: "13px",
-                  color: "rgba(134,239,172,0.5)",
+                  color: "rgba(122,47,0,0.5)",
                   marginBottom: "24px",
                   fontFamily: "'DM Sans', sans-serif",
                   fontWeight: 300,
@@ -354,7 +354,7 @@ export default function LoginPage() {
                       padding: "14px",
                       border: "none",
                       borderRadius: "10px",
-                      color: "#0c1a0d",
+                      color: "#FFF8F2",
                       fontSize: "13px",
                       fontWeight: 700,
                       fontFamily: "'Barlow Condensed', sans-serif",
@@ -373,7 +373,7 @@ export default function LoginPage() {
                   fontFamily: "'Barlow Condensed', sans-serif",
                   fontWeight: 800,
                   fontSize: "22px",
-                  color: "#f0faf0",
+                  color: "#1F1209",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
                   margin: "0 0 4px",
@@ -382,7 +382,7 @@ export default function LoginPage() {
                 </h2>
                 <p style={{
                   fontSize: "13px",
-                  color: "rgba(134,239,172,0.5)",
+                  color: "rgba(122,47,0,0.5)",
                   marginBottom: "22px",
                   fontFamily: "'DM Sans', sans-serif",
                   fontWeight: 300,
@@ -432,7 +432,7 @@ export default function LoginPage() {
                       padding: "14px",
                       border: "none",
                       borderRadius: "10px",
-                      color: "#0c1a0d",
+                      color: "#FFF8F2",
                       fontSize: "13px",
                       fontWeight: 700,
                       fontFamily: "'Barlow Condensed', sans-serif",
@@ -463,7 +463,7 @@ export default function LoginPage() {
               fontFamily: "'Barlow Condensed', sans-serif",
               fontWeight: 700,
               fontSize: "10px",
-              color: "rgba(134,239,172,0.3)",
+              color: "rgba(122,47,0,0.3)",
               letterSpacing: "2.5px",
               textTransform: "uppercase",
             }}>
@@ -484,7 +484,7 @@ function ErrorBanner({ children }: { children: React.ReactNode }) {
       alignItems: "center",
       gap: "8px",
       fontSize: "13px",
-      color: "#fca5a5",
+      color: "#DC2626",
       background: "rgba(239,68,68,0.08)",
       border: "1px solid rgba(239,68,68,0.18)",
       borderRadius: "8px",

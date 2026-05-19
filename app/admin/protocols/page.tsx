@@ -1,28 +1,15 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getAdminSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { FIG_MAP } from "@/lib/protocols";
 import { QrCodeDisplay } from "./qr-code-display";
 
 async function getProtocolsWithTokens() {
   const result = await db.execute("SELECT id, name, category, qr_token FROM protocols ORDER BY category, id");
   return result.rows as unknown as { id: string; name: string; category: string; qr_token: string }[];
 }
-
-const EMOJI_MAP: Record<string, string> = {
-  "meta-01-identificacao": "🪪",
-  "meta-02-comunicacao": "📢",
-  "meta-03-medicamentos": "💊",
-  "meta-04-cirurgia-segura": "✂️",
-  "meta-05-higiene-maos": "🧴",
-  "meta-06-quedas": "🛡️",
-  "meta-06-lesao-pressao": "🩹",
-  "prot-dor-toracica": "❤️",
-  "prot-avc": "🧠",
-  "prot-dor": "💉",
-  "prot-sepse": "🦠",
-  "prot-deterioracao": "📈",
-};
 
 export default async function AdminProtocolsPage() {
   const isAdmin = await getAdminSession();
@@ -38,21 +25,21 @@ export default async function AdminProtocolsPage() {
     <div className="stad-bg" style={{ minHeight: "100svh" }}>
       {/* ── HEADER ── */}
       <header style={{
-        background: "rgba(4,10,5,0.92)",
+        background: "rgba(255,248,242,0.92)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(34,197,94,0.12)",
+        borderBottom: "1px solid rgba(251,75,0,0.15)",
         padding: "16px 24px",
       }}>
-        <div style={{ maxWidth: 760, margin: "0 auto", display: "flex", alignItems: "center", gap: 16 }}>
+        <div style={{ maxWidth: 760, margin: "0 auto", display: "flex", alignItems: "center", gap: 14 }}>
           <Link
             href="/admin/dashboard"
             style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",
               width: 34, height: 34,
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 8, color: "rgba(134,239,172,0.6)",
+              background: "rgba(31,18,9,0.05)",
+              border: "1px solid rgba(31,18,9,0.08)",
+              borderRadius: 8, color: "rgba(122,47,0,0.7)",
               textDecoration: "none", fontSize: 16,
               transition: "background 0.2s",
               flexShrink: 0,
@@ -60,20 +47,33 @@ export default async function AdminProtocolsPage() {
           >
             ←
           </Link>
-          <div>
+          <Image
+            src="/assets/logo-laranja.png"
+            alt="Círculo Saúde"
+            width={140}
+            height={50}
+            priority
+            style={{ height: 30, width: "auto", objectFit: "contain", flexShrink: 0 }}
+          />
+          <div style={{
+            width: 1, height: 30, background: "rgba(31,18,9,0.12)", flexShrink: 0,
+          }} />
+          <div style={{ minWidth: 0 }}>
             <h1 style={{
               fontFamily: "var(--font-display)",
-              fontWeight: 900, fontSize: 18,
-              color: "#f0faf0", textTransform: "uppercase",
+              fontWeight: 900, fontSize: 16,
+              color: "#1F1209", textTransform: "uppercase",
               letterSpacing: "0.5px", lineHeight: 1,
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
             }}>
               QR Codes dos Protocolos
             </h1>
             <p style={{
               fontFamily: "var(--font-display)",
               fontWeight: 700, fontSize: 9,
-              color: "rgba(134,239,172,0.4)",
+              color: "rgba(122,47,0,0.5)",
               letterSpacing: "2px", textTransform: "uppercase", marginTop: 3,
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
             }}>
               Mostre ao participante para escanear
             </p>
@@ -117,21 +117,29 @@ function QrCard({
   protocol: { id: string; name: string; category: string; qr_token: string };
   appUrl: string;
 }) {
-  const emoji = EMOJI_MAP[protocol.id] ?? "⭐";
+  const figSrc = FIG_MAP[protocol.id];
   return (
     <div style={{
-      background: "rgba(4,11,6,0.75)",
-      border: "1px solid rgba(255,255,255,0.07)",
+      background: "rgba(255,248,242,0.75)",
+      border: "1px solid rgba(31,18,9,0.06)",
       borderRadius: 16, padding: "18px",
       transition: "border-color 0.2s",
     }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-        <span style={{ fontSize: 22 }}>{emoji}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+        <div style={{
+          position: "relative",
+          width: 44, aspectRatio: "3 / 5",
+          flexShrink: 0, borderRadius: 6, overflow: "hidden",
+          background: "#FFF1DC",
+          boxShadow: "0 2px 6px rgba(31,18,9,0.1)",
+        }}>
+          {figSrc && <Image src={figSrc} alt={protocol.name} fill sizes="44px" style={{ objectFit: "cover" }} />}
+        </div>
         <div>
           <p style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700, fontSize: 9,
-            color: "#F2B705", letterSpacing: "1.5px",
+            color: "#FB4B00", letterSpacing: "1.5px",
             textTransform: "uppercase",
           }}>
             {protocol.category === "meta" ? "Meta Internacional" : "Protocolo Assistencial"}
@@ -139,7 +147,7 @@ function QrCard({
           <p style={{
             fontFamily: "var(--font-display)",
             fontWeight: 800, fontSize: 14,
-            color: "#f0faf0", textTransform: "uppercase",
+            color: "#1F1209", textTransform: "uppercase",
             letterSpacing: "0.3px", lineHeight: 1.2,
           }}>
             {protocol.name}
@@ -160,7 +168,7 @@ function QrCard({
 
       <p style={{
         fontFamily: "monospace",
-        fontSize: 9, color: "rgba(134,239,172,0.25)",
+        fontSize: 9, color: "rgba(122,47,0,0.3)",
         wordBreak: "break-all", lineHeight: 1.5,
       }}>
         {protocol.qr_token}

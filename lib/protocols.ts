@@ -57,24 +57,10 @@ export const PROTOCOLS: Protocol[] = [
     sessions: ["18/06", "30/06", "09/07"],
   },
   {
-    id: "prot-dor-toracica",
-    name: "Prot. Dor Torácica",
+    id: "prot-tev",
+    name: "Prot. TEV",
     category: "protocolo",
-    description: "Protocolo de atendimento à dor torácica aguda.",
-    sessions: ["16/06", "25/06", "07/07"],
-  },
-  {
-    id: "prot-avc",
-    name: "Prot. AVC",
-    category: "protocolo",
-    description: "Protocolo de atendimento ao AVC: Escala de Cincinnati e linha do tempo.",
-    sessions: ["16/06", "25/06", "07/07"],
-  },
-  {
-    id: "prot-dor",
-    name: "Prot. Dor",
-    category: "protocolo",
-    description: "Protocolo de avaliação e manejo da dor: escalas e intervenções.",
+    description: "Protocolo de Tromboembolismo Venoso: avaliação de risco e profilaxia.",
     sessions: ["18/06", "30/06", "09/07"],
   },
   {
@@ -85,10 +71,23 @@ export const PROTOCOLS: Protocol[] = [
     sessions: ["23/06", "02/07", "14/07"],
   },
   {
-    id: "prot-deterioracao",
-    name: "Prot. Deterioração",
+    id: "prot-dor-toracica",
+    name: "Prot. Dor Torácica",
     category: "protocolo",
-    description: "Protocolo de Deterioração Clínica: MEWS e acionamento precoce.",
-    sessions: ["23/06", "02/07", "14/07"],
+    description: "Protocolo de atendimento à dor torácica aguda.",
+    sessions: ["16/06", "25/06", "07/07"],
   },
 ];
+
+export const FIG_MAP: Record<string, string> = {
+  "meta-01-identificacao": "/assets/fig-1.jpeg",
+  "meta-02-comunicacao": "/assets/fig-2.jpeg",
+  "meta-03-medicamentos": "/assets/fig-3.jpeg",
+  "meta-04-cirurgia-segura": "/assets/fig-4.jpeg",
+  "meta-05-higiene-maos": "/assets/fig-5.jpeg",
+  "meta-06-quedas": "/assets/fig-6.jpeg",
+  "meta-06-lesao-pressao": "/assets/fig-7.jpeg",
+  "prot-tev": "/assets/fig-8.jpeg",
+  "prot-sepse": "/assets/fig-9.jpeg",
+  "prot-dor-toracica": "/assets/fig-10.jpeg",
+};
